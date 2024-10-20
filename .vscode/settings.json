@@ -1,0 +1,11 @@
+{
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+    "editor.guides.bracketPairs": "active",
+    "editor.guides.bracketPairsHorizontal": "active",
+    "editor.language.colorizedBracketPairs": [],
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.highlightActiveBracketPair": true,
+    "oneDarkPro.vivid": true,
+    "oneDarkPro.bold": true,
+    "workbench.colorTheme": "One Dark Pro Darker"
+}

@@ -1,0 +1,661 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Bocados Callejeros</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:title" content="" />
+    <meta property="og:type" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="static/assets/imgs/theme/favicon.png">
+
+
+
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="assets/css/plugins/slider-range.css" />
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+</head>
+
+<body>
+
+    
+    <header class="header-area header-style-1 header-height-2">
+        <div class="mobile-promotion">
+            <span>Gran apertura,, <strong>hasta un 15% de </strong> descuento en todos los artículos. Solo <strong> quedan </strong> 3 dias</span>
+        </div>
+        <div class="header-top header-top-ptb-1 d-none d-lg-block">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-xl-3 col-lg-4">
+                        <div class="header-info">
+                            <ul>
+                                <li><a href="{% url 'core:about_us' %}">Sobre Nosotros</a></li>
+                                <li><a href="{% url 'core:dashboard' %}">Mi cuenta</a></li>
+                                <li><a href="{% url 'core:wishlist' %}">Lista de deseos</a></li>
+                                <li><a href="{% url 'core:dashboard' %}">Seguimiento de pedido</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-4">
+                        <div class="text-center">
+                            <div id="news-flash" class="d-inline-block">
+                                <ul>
+                                    <li>Entrega 100% segura sin necesidad de contactar al mensajero</li>
+                                    <li>Ofertas de gran valor: ahorra más con cupones</li>
+                                    <li>¡Hoy! 25% de descuento en hamburguesas clásicas</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4">
+                        <div class="header-info header-info-right">
+                            <ul>
+                                <li>Necesitas ayuda? Contactanos: <strong class="text-brand"> + 1800 900</strong></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-middle header-middle-ptb-1 d-none d-lg-block">
+            <div class="container">
+                <div class="header-wrap">
+                    <div class="logo logo-width-1">
+                        <a href="/"><img src="{% static 'assets/imgs/theme/logo.png' %}"  alt="logo" /></a>
+                    </div>
+                    <div class="header-right">
+                        <div class="search-style-2">
+                            <form action="{% url 'core:search' %}" method="GET">
+                                <select class="select-active">
+                                    <option>Categorias</option>
+                                    <option>Hamburguesas</option>
+                                    <option>Hot Dogs</option>
+                                    <option>Salchipapas</option>
+                                    <option>Pataconas</option>
+                                    <option>Adicionales</option>
+                                    <option>Bebidas</option>
+                                    <option>Pizzas</option>
+                                </select>
+                                <input type="text" placeholder="Buscar productos..." name="q" />
+                                <button class="material-symbols-outlined" type="submit"><span class="material-symbols-outlined">search</span></button>
+
+                            </form>
+                        </div>
+                        <div class="header-action-right">
+                            <div class="header-action-2">
+                                <div class="header-action-icon-2">
+                                    <a href="{% url 'core:wishlist' %}">
+                                        <img class="svgInject" alt="E-commerce" src="{% static 'assets/imgs/theme/icons/icon-heart.svg' %}" />
+                                        {% if request.user.is_authenticated %}
+                                        <span class="pro-count blue">{{ wishlist.count }}</span>
+                                        {% else %}
+                                        <span class="pro-count blue">0</span>
+                                        {% endif %}
+                                    </a>
+                                    <a href="{% url 'core:wishlist' %}"><span class="lable">Deseos</span></a>
+                                </div>
+                                <div class="header-action-icon-2">
+                                    <a class="mini-cart-icon" href="{% url 'core:cart' %}">
+                                        <img alt="E-commerce" src="{% static 'assets/imgs/theme/icons/icon-cart.svg' %}" />
+                                        <span class="pro-count blue cart-items-count">{{ request.session.cart_data_obj|length }}</span>
+                                    </a>
+                                    <a href="{% url 'core:cart' %}"><span class="lable">Carrito</span></a>
+                                    <div class="cart-dropdown-wrap cart-dropdown-hm2">
+
+                                        <div class="shopping-cart-footer">
+
+                                            <div class="shopping-cart-button">
+                                                <a href="{% url 'core:cart' %}" class="outline">Vista de carrito</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="header-action-icon-2">
+                                    <a href="{% url 'core:dashboard' %}">
+                                        <img class="svgInject" alt="E-commerce" src="{% static 'assets/imgs/theme/icons/icon-user.svg' %}" />
+                                    </a>
+                                    <a href="{% url 'core:dashboard' %}"><span class="lable ml-0">Cuenta</span></a>
+                                    <div class="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
+                                        <ul>
+                                            <li><a href="{% url 'core:dashboard' %}"><i class="fi fi-rs-user mr-10"></i>Mi Cuenta</a></li>
+                                            <li><a href="{% url 'useradmin:dashboard' %}"><i class="fi fi-rs-user mr-10"></i>Panel de Administrador</a></li>
+                                            <!-- <li><a href="#"><i class="fi fi-rs-location-alt mr-10"></i>Order Tracking</a></li> -->
+                                            <li><a href="{% url 'core:wishlist' %}"><i class="fi fi-rs-heart mr-10"></i>Mis Deseos</a></li>
+                                            <li><a href="{% url 'core:dashboard' %}"><i class="fi fi-rs-settings-sliders mr-10"></i>Configuracion</a></li>
+
+                                            {% if request.user.is_authenticated %}
+                                            <li><a href="{% url 'userauths:sign-out' %}"><i class="fi fi-rs-sign-out mr-10"></i>Cerrar sesión</a></li>
+                                            {% else %}
+                                            <li><a href="{% url 'userauths:sign-in' %}"><i class="fi fi-rs-sign-in mr-10"></i>Iniciar sesión</a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-bottom header-bottom-bg-color sticky-bar">
+            <div class="container">
+                <div class="header-wrap header-space-between position-relative"  style="margin-top: 20px;">
+                    <div class="logo logo-width-1 d-block d-lg-none">
+                        <a href="{% url 'core:index' %}"><img src="{% static 'assets/imgs/theme/logo2.png' %}"alt="logo" /></a>
+                    </div>
+                    <div class="header-nav d-none d-lg-flex">
+                        <div class="main-categori-wrap d-none d-lg-block">
+                            <a class="categories-button-active" href="#">
+                                <span class="fi-rs-apps"></span> <span class="et">Buscador</span> Todas las Categorias
+                                <i class="fi-rs-angle-down"></i>
+                            </a>
+                            <div class="categories-dropdown-wrap categories-dropdown-active-large font-heading">
+                                <div class="d-flex categori-dropdown-inner">
+                                    <ul>
+                                        {% for c in categories %}
+
+                                        <li>
+                                            <a href="{% url 'core:category-product-list' c.cid %}"> <img src="{{ c.image.url }}" alt="" />{{c.title}}</a>
+                                        </li>
+                                        {% endfor %}
+
+                                    </ul>
+
+                                </div>
+
+                                <div class="more_categories"><span class="icon"></span> <span class="heading-sm-1">Mas Contenido</span></div>
+                            </div>
+                        </div>
+                        <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block font-heading">
+                            <nav>
+                                <ul>
+                                    <li class="hot-deals"><a href="{% url 'core:product-list' %}">Ofertas</a></li>
+                                    <li>
+                                        <a class="active" href="{% url 'core:index' %}">Inicio</a>
+
+                                    </li>
+
+                                    <li>
+                                        <a href="#">Categorias <i class="fi-rs-angle-down"></i></a>
+                                        <ul class="sub-menu">
+                                            {% for c in categories %}
+                                            <li><a href="{% url 'core:category-product-list' c.cid %}">{{c.title}}</a></li>
+                                            {% endfor %}
+                                            <hr>
+                                            <li><a href="{% url 'core:category-list' %}">Todas las Categorias</a></li>
+
+                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <a href="{% url 'core:product-list'  %}">Tienda</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="{% url 'core:vendor-list' %}">Proovedores</a>
+
+                                    </li>
+                                    <li class="position-static">
+                                        <a href="#">Mega menu <i class="fi-rs-angle-down"></i></a>
+                                        <ul class="mega-menu">
+                                            <li class="sub-mega-menu sub-mega-menu-width-22">
+                                                <a class="menu-title" href="#" style="pointer-events: none;">Hamburguesas y Hot dogs</a>
+                                                <ul>
+                                                    <li><a href="#" style="pointer-events: none;">Fuego Infernal Burger</a></li>
+                                                    <li><a href="#" style="pointer-events: none;">Clásica Americana</a></li>
+                                                    <li><a href="#" style="pointer-events: none;">Súper Queso Delux</a></li>
+                                                    <li><a href="#" style="pointer-events: none;">Perro Caliente Explosivo</a></li>
+                                                    <li><a href="#" style="pointer-events: none;">Chicago Style Dog</a></li>
+                                                    <li><a href="#" style="pointer-events: none;">Tex-Mex Picante</a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="sub-mega-menu sub-mega-menu-width-22">
+                                                <a class="menu-title" href="#" style="pointer-events: none;">Salchipapas y patacones</a>
+                                                <ul>
+                                                    <li><a href="#" style="pointer-events: none;">Salchipapas Explosivas</a></li>
+                                                    <li><a href="#" style="pointer-events: none;">Salchipapas Supreme</a></li>
+                                                    <li><a href="#" style="pointer-events: none;">Salchipapas Fiesta Mexicana</a></li>
+                                                    <li><a href="#" style="pointer-events: none;">Patacon Crispy </a></li>
+                                                    <li><a href="#" style="pointer-events: none;">Patacon Dorado</a></li>
+                                                    <li><a href="#" style="pointer-events: none;">Patacon de la Casa</a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="sub-mega-menu sub-mega-menu-width-22">
+                                                <a class="menu-title" href="#" style="pointer-events: none;">Bebidas y Adiciones</a>
+                                                <ul>
+                                                    <li><a href="#" style="pointer-events: none;">Gaseosas</a></li>
+                                                    <li><a href="#" style="pointer-events: none;">Jugos Naturales</a></li>
+                                                    <li><a href="#" style="pointer-events: none;">Limonadas</a></li>
+                                                    <li><a href="#" style="pointer-events: none;">Palitos Mozzarella</a></li>
+                                                    <li><a href="#" style="pointer-events: none;">Ensalada de la Casa</a></li>
+                                                    <li><a href="#" style="pointer-events: none;">Nachos con Queso</a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="sub-mega-menu sub-mega-menu-width-34">
+                                                <div class="menu-banner-wrap">
+                                                    <a href="#"><img src="{% static 'assets/imgs/banner/2148575424.png' %}" alt="E-commerce" /></a>
+                                                    <div class="menu-banner-content">
+                                                        <h4>Grandes Ofertas</h4>
+                                                        <h3>
+                                                            No te lo pierdas<br /> Tendencia
+                                                        </h3>
+                                                        <div class="menu-banner-price">
+                                                            <span class="new-price text-success">Ahorra un 50%</span>
+                                                        </div>
+                                                        <div class="menu-banner-btn">
+                                                            <a href="/products/">Compra ahora</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="menu-banner-discount">
+                                                        <h3>
+                                                            <span>25%</span> off
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">Páginas<i class="fi-rs-angle-down"></i></a>
+                                        <ul class="sub-menu">
+                                            <li><a href="{% url 'core:about_us' %}">Sobre Nosotros</a></li>
+                                            <li><a href="{% url 'core:contact' %}">Contacto</a></li>
+                                            <li><a href="{% url 'core:dashboard' %}">Mi Panel</a></li>
+                                            <li><a href="{% url 'core:purchase_guide' %}">Guía de Compra</a></li>
+                                            <li><a href="{% url 'core:privacy_policy' %}">Politicas de Privacidad</a></li>
+                                            <li><a href="{% url 'core:terms_of_service' %}">Términos de Servicio</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'core:contact' %}">Contacto</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="hotline d-none d-lg-flex">
+                        <img src="{% static 'assets/imgs/theme/icons/icon-headphone.svg' %}" alt="hotline" />
+                        <p>1900 - 888<span>24/7 Centro de Soporte</span></p>
+                    </div>
+                    <div class="header-action-icon-2 d-block d-lg-none">
+                        <div class="burger-icon burger-icon-white">
+                            <span class="burger-icon-top"></span>
+                            <span class="burger-icon-mid"></span>
+                            <span class="burger-icon-bottom"></span>
+                        </div>
+                    </div>
+                    <div class="header-action-right d-block d-lg-none">
+                        <div class="header-action-2">
+                            <div class="header-action-icon-2">
+                                <a href="{% url 'core:wishlist' %}">
+                                    <img alt="E-commerce" src="{% static 'assets/imgs/theme/icons/icon-heart.svg' %}" />
+                                    {% if request.user.is_authenticated %}
+                                    <span class="pro-count blue">{{ wishlist.count }}</span>
+                                    {% else %}
+                                    <span class="pro-count blue">0</span>
+                                    {% endif %}
+                                </a>
+                            </div>
+                            <div class="header-action-icon-2">
+                                <a class="mini-cart-icon" href="{% url 'core:cart' %}">
+                                    <img alt="E-commerce" src="{% static 'assets/imgs/theme/icons/icon-cart.svg' %}" />
+                                    <span class="pro-count white cart-items-count">{{ request.session.cart_data_obj|length }}</span>
+                                </a>
+                                <div class="cart-dropdown-wrap cart-dropdown-hm2">
+
+                                    <div class="shopping-cart-footer">
+                                        <div class="shopping-cart-button">
+                                            <a href="{% url 'core:cart' %}">Vista del carrito</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{message.tags}}">
+                            <strong>{{ message }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <script>
+                    setTimeout (() => {
+                        $(".alert").alert("close");
+                    }, 3000)
+                </script>
+            </div>
+        </div>
+    </header>
+    <div class="mobile-header-active mobile-header-wrapper-style">
+        <div class="mobile-header-wrapper-inner">
+            <div class="mobile-header-top">
+                <div class="mobile-header-logo">
+                    <a href="/"><img src="{% static 'assets/imgs/theme/logo.png' %}" alt="logo" /></a>
+                </div>
+                <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
+                    <button class="close-style search-close">
+                        <i class="icon-top"></i>
+                        <i class="icon-bottom"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="mobile-header-content-area">
+                <div class="mobile-search search-style-3 mobile-header-border">
+                    <form action="#">
+                        <input type="text" placeholder="Buscar Productos" />
+                        <button type="submit"><i class="fi-rs-search"></i></button>
+                    </form>
+                </div>
+                <div class="mobile-menu-wrap mobile-header-border">
+                    <!-- mobile menu start -->
+                    <nav>
+                        <ul class="mobile-menu font-heading">
+                            <li class="menu-item-has-children">
+                                <a href="{% url 'userauths:sign-in' %}">Iniciar sesion</a>
+                                
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="#">Tienda</a>
+                                
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="{% url 'core:vendor-list' %}">Proovedores</a>
+                            </li>
+                           
+                            
+                            <li class="menu-item-has-children">
+                                <a href="#">Página</a>
+                                <ul class="dropdown">
+                                    <li><a href="{% url 'core:about_us' %}">Sobre Nosotros</a></li>
+                                    <li><a href="{% url 'core:cart' %}">Vista de carrito</a></li>
+                                    <li><a href="/wishlist/">Deseos</a></li>
+                                    <li><a href="{% url 'core:contact' %}">Contactanos</a></li>
+                                    <li><a href="{% url 'core:dashboard' %}">Seguimiento de Pedido</a></li>
+                                    <li><a href="{% url 'core:privacy_policy' %}">Politica de Privacidad</a></li>
+                                    <li><a href="{% url 'core:terms_of_service' %}">Termonos de Servicio</a></li>
+                                </ul>   
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- mobile menu end -->
+                </div>
+                <div class="mobile-header-info-wrap">
+                    <div class="single-mobile-header-info">
+                        <a href="#"><i class="fi-rs-marker"></i> Nuestra Ubicación </a>
+                    </div>
+                    <div class="single-mobile-header-info">
+                        <a href="#"><i class="fi-rs-user"></i>Iniciar sesión/ Registrarse </a>
+                    </div>
+                    <div class="single-mobile-header-info">
+                        <a href="#"><i class="fi-rs-headphones"></i>(+57) 310 - 225 - 5116 </a>
+                    </div>
+                </div>
+                <div class="mobile-social-icon mb-50">
+                    <h6 class="mb-15">Siguenos</h6>
+                    <a href="https://web.facebook.com/profile.php?id=61554457072826"><img src="{% static 'assets/imgs/theme/icons/icon-facebook-white.svg' %}" alt="" /></a>
+                    <a href="https://x.com/BocadosCalle"><img src="{% static 'assets/imgs/theme/icons/icon-twitter-white.svg' %}" alt="" /></a>
+                    <a href="https://www.instagram.com/bocados_callejeros/"><img src="{% static 'assets/imgs/theme/icons/icon-instagram-white.svg' %}" alt="" /></a>
+                </div>
+                <div class="site-copyright">Copyright 2024 - Bocados Callejeros@.</div>
+            </div>
+        </div>
+    </div>
+    <!--End header-->
+
+    {% block content %}
+
+
+
+    {% endblock content %}
+
+
+
+    <footer class="main">
+        <section class="newsletter mb-15">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="position-relative newsletter-inner">
+                            <div class="newsletter-content">
+                                <h2 class="mb-20-2">
+                                    Quédate en casa y obtén los mejores productos<br/>en nuestra tienda
+                                </h2>
+                                <p class="mb-45">Compra ya en  <span class="text-brand">Bocados Callejeros</span></p>
+                                <form class="form-subcriber d-flex">
+                                    <input type="email" placeholder="Correo electrónico" />
+                                    <button class="btn" type="submit">Subscribirse</button>
+                                </form>
+                            </div>
+                            <img src="{% static 'assets/imgs/banner/banner-9.png' %}" alt="newsletter" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="featured section-padding">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-1-5 col-md-4 col-12 col-sm-6 mb-md-4 mb-xl-0">
+                        <div class="banner-left-icon d-flex align-items-center wow fadeIn animated">
+                            <div class="banner-icon">
+                                <img src="{% static 'assets/imgs/theme/icons/icon-1.svg' %}" alt="" />
+                            </div>
+                            <div class="banner-text">
+                                <h3 class="icon-box-title">Mejores precios y ofertas</h3>
+                                <p>Pedidos de $50 o más</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+                        <div class="banner-left-icon d-flex align-items-center wow fadeIn animated">
+                            <div class="banner-icon">
+                                <img src="{% static 'assets/imgs/theme/icons/icon-2.svg' %}" alt="" />
+                            </div>
+                            <div class="banner-text">
+                                <h3 class="icon-box-title">Entrega gratuita</h3>
+                                <p>Servicios increíbles 24/7</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+                        <div class="banner-left-icon d-flex align-items-center wow fadeIn animated">
+                            <div class="banner-icon">
+                                <img src="{% static 'assets/imgs/theme/icons/icon-3.svg' %}" alt="" />
+                            </div>
+                            <div class="banner-text">
+                                <h3 class="icon-box-title">Gran oferta diaria</h3>
+                                <p>Cuando te registras</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+                        <div class="banner-left-icon d-flex align-items-center wow fadeIn animated">
+                            <div class="banner-icon">
+                                <img src="{% static 'assets/imgs/theme/icons/icon-4.svg' %}" alt="" />
+                            </div>
+                            <div class="banner-text">
+                                <h3 class="icon-box-title">Amplio surtido</h3>
+                                <p>Mega Descuentos</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+                        <div class="banner-left-icon d-flex align-items-center wow fadeIn animated">
+                            <div class="banner-icon">
+                                <img src="{% static 'assets/imgs/theme/icons/icon-5.svg' %}" alt="" />
+                            </div>
+                            <div class="banner-text">
+                                <h3 class="icon-box-title">Devoluciones fáciles</h3>
+                                <p>dentro de 30 días</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1-5 col-md-4 col-12 col-sm-6 d-xl-none">
+                        <div class="banner-left-icon d-flex align-items-center wow fadeIn animated">
+                            <div class="banner-icon">
+                                <img src="{% static 'assets/imgs/theme/icons/icon-6.svg' %}" alt="" />
+                            </div>
+                            <div class="banner-text">
+                                <h3 class="icon-box-title">Entrega segura</h3>
+                                <p>Dentro de 30 días</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section-padding footer-mid">
+            <div class="container pt-15 pb-20">
+                <div class="row">
+                    <div class="col">
+                        <div class="widget-about font-md mb-md-3 mb-lg-3 mb-xl-0">
+                            <div class="logo mb-30">
+                                <a href="/" class="mb-15"><img src="{% static 'assets/imgs/theme/logo.png' %}" alt="logo" /></a>
+                            </div>
+                            <ul class="contact-infor">
+                                <li><strong>Direccion: </strong> <span>Ibague - Tolima</span></li>
+                                <li><strong>Telefono: </strong><span>3102255116</span></li>
+                                <li><strong>Email: </strong><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6a190b060f2a240f191e44090507">[bocadoscallejeros@gmail.com]</a></span></li>
+                                <li><strong>Horarios: </strong><span>24/7</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="footer-link-widget col">
+                        <h4 class="widget-title">Compañia</h4>
+                        <ul class="footer-list mb-sm-5 mb-md-0">
+                            <li><a href="/about_us/">Sobre Nosotros</a></li>
+                            <li><a href="privacy_policy">Politica de Privacidad</a></li>
+                            <li><a href="terms_of_service">Terminos &amp; Condiciones</a></li>
+                            <li><a href="/contact/">Contactanos</a></li>
+                            <li><a href="/contact/">Centro de Soporte</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-link-widget col">
+                        <h4 class="widget-title">Cuenta</h4>
+                        <ul class="footer-list mb-sm-5 mb-md-0">
+                            <li><a href="/dashboard/">Iniciar sesión</a></li>
+                            <li><a href="/cart/">Vista del Carrito</a></li>
+                            <li><a href="/wishlist/">Deseos</a></li>
+                            <li><a href="#">Seguimiento de Pedido</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-link-widget col">
+                        <h4 class="widget-title">Corporativo</h4>
+                        <ul class="footer-list mb-sm-5 mb-md-0">
+                            <li><a href="/products/">Promociones</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-link-widget col">
+                        <h4 class="widget-title">Categorias</h4>
+                        <ul class="footer-list mb-sm-5 mb-md-0">
+                            <li><a href="/category/cat24cgfebeg4/">Hamburguesas</a></li>
+                            <li><a href="/category/cat2dcaahd53f/">Hot Dogs</a></li>
+                            <li><a href="/category/catcf3bafda5d/">Salchipapas</a></li>
+                            <li><a href="/category/cat5fabf31gb5/">Pataconas</a></li>
+                            <li><a href="/category/cat5f4b12fa2e/">Adicionales</a></li>
+                            <li><a href="/category/cat2hcfhgh5d2/">Bebidas</a></li>
+                            <li><a href="/category/cat5e4beha3a5/">Pizzas</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-link-widget widget-install-app col">
+                        <h4 class="widget-title">Descarga nuestra app</h4>
+                        <p class="wow fadeIn animated">Desde la Play Store y App Store</p>
+                        <div class="download-app">
+                            <a href="#" class="hover-up mb-sm-2 mb-lg-0"><img class="active" src="{% static 'assets/imgs/theme/app-store.jpg' %}" alt="" /></a>
+                            <a href="#" class="hover-up mb-sm-2"><img src="{% static 'assets/imgs/theme/google-play.jpg' %}" alt="" /></a>
+                        </div>
+                        <p class="mb-20">Pasarelas de pago seguras</p>
+                        <img class="wow fadeIn animated" src="{% static 'assets/imgs/theme/payment-method.png' %}" alt="" />
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="container pb-30">
+            <div class="row align-items-center">
+                <div class="col-12 mb-30">
+                    <div class="footer-bottom"></div>
+                </div>
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                    <p class="font-sm mb-0">&copy; 2024, <strong class="text-brand">Bocados Callejeros </strong> - Ecommerce <br />Todos los derechos reservados</p>
+                </div>
+                <div class="col-xl-4 col-lg-6 text-center d-none d-xl-block">
+                    <div class="hotline d-lg-inline-flex mr-30">
+                        <img src="{% static 'assets/imgs/theme/icons/phone-call.svg' %}" alt="hotline" />
+                        <p>310-225-5111<span>Domicilio 24/7</span></p>
+                    </div>
+                    <div class="hotline d-lg-inline-flex">
+                        <img src="{% static 'assets/imgs/theme/icons/phone-call.svg' %}" alt="hotline" />
+                        <p>310-225-5116<span>Domicilio 24/7</span></p>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-6 col-md-6 text-end d-none d-md-block">
+                    <div class="mobile-social-icon">
+                        <h6>Siguenos</h6>
+                        <a href="https://web.facebook.com/profile.php?id=61554457072826"><img src="{% static 'assets/imgs/theme/icons/icon-facebook-white.svg' %}" alt="" /></a>
+                        <a href="https://x.com/BocadosCalle"><img src="{% static 'assets/imgs/theme/icons/icon-twitter-white.svg' %}" alt="" /></a>
+                        <a href="https://www.instagram.com/bocados_callejeros/"><img src="{% static 'assets/imgs/theme/icons/icon-instagram-white.svg' %}" alt="" /></a>
+                    </div>
+                    <p class="font-sm">Hasta un 15% de descuento en tu primera suscripción</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Preloader Start -->
+    <!-- <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <img src="{% static '{% static ' %}'assets/imgs/theme/loading.gif' %}" alt="" />
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- Vendor JS-->
+    <script data-cfasync="false" src="{% static '/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/modernizr-3.6.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/jquery-migrate-3.3.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/slick.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.syotimer.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/wow.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/slider-range.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/perfect-scrollbar.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/magnific-popup.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/select2.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/waypoints.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/counterup.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.countdown.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/images-loaded.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/isotope.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/scrollup.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.vticker-min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.theia.sticky.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.elevatezoom.js' %}"></script>
+    <!-- Template  JS -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <script src="{% static 'assets/js/shop.js' %}"></script>
+    <script src="{% static 'assets/js/function.js' %}"></script>
+</body>
+
+</html>

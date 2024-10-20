@@ -1,0 +1,191 @@
+{% extends 'useradmin/base.html' %}
+{% load static %}
+{% load humanize %}
+{{ form.media }}
+{% block content %}   
+<head>
+    <style>
+        select {
+        appearance: none;
+        outline: 0;
+        background: rgba(240, 240, 240, 0.548);
+        background-image: none;
+        width: 100%;
+        height: 700px;
+        color: black;
+        cursor: pointer;
+        border: none;
+        border-radius: 3px;
+    }
+     
+    #id_category {
+        position: relative;
+        display: block;
+        width: 15em;
+        font-family: poppins;
+        border: none;
+        height: 3em;
+        line-height: 3;
+        overflow: hidden;
+        border-radius: .25em;
+        padding-bottom: 10px;
+    }
+    </style>
+</head>
+            <section class="content-main">
+                <form method="POST" enctype="multipart/form-data">
+
+                <div class="row">
+                    <div class="col-9">
+                        <div class="content-header">
+                            <h2 class="content-title">Añadir Nuevo Producto</h2>
+                            <div>
+                                <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Guardar en borrador</button>
+                                <button class="btn btn-md rounded font-sm hover-up">Publicar</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h4>Basico</h4>
+                            </div>
+                            <div class="card-body">
+                                
+                                {% if form.errors %}
+                                    
+                                
+                                <div class="alert alert-danger">
+                                    <strong>{{ form.errors }}</strong>
+                                </div>
+                                {% endif %}
+                                    {% csrf_token %}
+                                    <div class="mb-4">
+                                        <label for="product_name" class="form-label">Titulo del Producto</label>
+                                        {{form.title}}
+                                        <!-- <input type="text" placeholder="Type here" class="form-control" id="product_name" /> -->
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Descripcion</label>
+                                        {{form.description}}
+
+                                        <!-- <textarea placeholder="Type here" class="form-control" rows="4"></textarea> -->
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="mb-4">
+                                                <label class="form-label">Precio de venta</label>
+                                                <div class="row gx-2">
+                                        {{form.price}}
+
+                                                    <!-- <input placeholder="$" type="text" class="form-control" /> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="mb-4">
+                                                <label class="form-label">Precio Antiguo</label>
+                                        {{form.old_price}}
+
+                                                <!-- <input placeholder="$" type="text" class="form-control" /> -->
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <label class="form-label">Divisa</label>
+                                            <select class="form-select">
+                                                <option>USD</option>
+                                               
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Tipo</label>
+                                        {{form.type}}
+                                        <!-- <input type="text" placeholder="%" class="form-control" id="product_name" /> -->
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Stock</label>
+                                        {{form.stock_count}}
+                                        <!-- <input type="text" placeholder="%" class="form-control" id="product_name" /> -->
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label">Vida del Producto</label>
+                                        {{form.life}}
+                                        <!-- <input type="text" placeholder="%" class="form-control" id="product_name" /> -->
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label">Fecha de manufacturacion</label>
+                                        {{form.mfd}}
+                                        <!-- <input type="text" placeholder="%" class="form-control" id="product_name" /> -->
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label">Etiquetas</label>
+                                        {{form.tags}}
+                                        <small class="text-muted">Separar etiqueta usando coma</small>
+                                        <!-- <input type="text" placeholder="%" class="form-control" id="product_name" /> -->
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label">Producto Digital</label>
+                                        <br>
+                                        {{form.digital}}
+                                        <small class="text-muted">Compruebe si solo este es un producto digital.</small>
+                                        <!-- <input type="text" placeholder="%" class="form-control" id="product_name" /> -->
+                                    </div>
+                                    
+                                    <label class="form-check mb-4">
+                                        <input class="form-check-input" type="checkbox" value="" />
+                                        <span class="form-check-label">Hacer una Plantilla</span>
+                                    </label>
+                            </div>
+                        </div>
+                        <!-- card end// -->
+                       
+                        <!-- card end// -->
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h4>Media</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="input-upload">
+                                    <img src="{{ product.image.url }}" alt="" />
+                                    <!-- <input class="form-control" type="file" /> -->
+                                    {{form.image}}
+                                    
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <!-- card end// -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h4>Otros</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row gx-2">
+                                    <div class="col-sm-6 mb-3">
+                                        <label class="form-label">Categoria</label>
+                                        {{form.category}}
+                                    </div>
+                                    
+                                </div>
+                                <!-- row.// -->
+                            </div>
+                            <br>
+                            
+                        </div>
+                        <!-- card end// -->
+                        <button class="btn mt-3 btn-md rounded font-sm hover-up" type="submit">Actualizar Producto</button>
+                    </div>
+                </div>
+                </form>
+            </section>
+            <!-- content-main end// -->
+              
+            {% endblock content %}

@@ -1,0 +1,147 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+    <main class="main" id="cart-list">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="/" rel="nofollow"><i class="fi-rs-home mr-5"></i>Inicio</a>
+                    <span></span> Tienda 
+                    <span></span> Carrito
+                </div>
+            </div>
+        </div>
+        <div class="container mb-80 mt-50">
+            <div class="row">
+                <div class="col-lg-8 mb-40">
+                    <h1 class="heading-2 mb-10">Tu carrito</h1>
+                    <div class="d-flex justify-content-between">
+                        <h6 class="text-body">Hay <span class="text-brand">{{ totalcartitems }}</span> productos en su carrito</h6>
+                    </div>
+                </div>
+            </div>
+            <form action="{% url 'core:save_checkout_info' %}" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="table-responsive shopping-summery">
+                            <table class="table table-wishlist">
+                                <thead>
+                                    <tr class="main-heading">
+                                        
+                                        <th scope="col">Productos</th>
+                                        <th scope="col">Titulo</th>
+                                        <th scope="col">Precio unitario</th>
+                                        <th scope="col" class="text-center">Cantidad</th>
+                                        <th scope="col">Subtotal</th>
+                                        <th scope="col" class="">Refrescar</th>
+                                        <th scope="col" class="end">Eliminar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for product_id, item in cart_data.items %}
+                                    <tr class="pt-30">
+                                        <td class="image product-thumbnail pt-40"><img src="{{ item.image }}" alt="#"></td>
+                                        <td class="product-des product-name">
+                                            <h6 class="mb-5"><a class="product-name mb-10 text-heading" href="{% url 'core:product-detail' item.pid %}">{{ item.title }}</a></h6>
+                                        
+                                        </td>
+                                        <td class="price" data-title="Price">
+                                            <h4 class="text-body">${{item.price|floatformat:2}}</h4>
+                                        </td>
+                                        <td class="text-center detail-info" data-title="Stock">
+                                            <div class="mr-15">
+                                                <input type="number" placeholder="Qty" class="w-25 product-qty-{{ product_id }}"  name="" value="{{ item.qty }}" id="">
+                                            </div>
+                                        </td>
+                                        <td class="price" data-title="Price">
+                                            <h4 class="text-brand">${% widthratio item.price 1 item.qty %} </h4>
+                                        </td>
+                                        <td class="action text-center" data-title="Remove"><a style="border: none; background: none;"  class="text-body update-product" data-product="{{ product_id }}"><i class="fi-rs-refresh"></i></a></td>
+                                        <td class="action text-center" data-title="Remove"><a style="border: none; background: none;"  class="text-body delete-product" data-product="{{ product_id }}"><i class="fi-rs-trash"></i></a></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+                            <div class="row mt-4">
+                                <h4 class="mb-30">Datos personales</h4>
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="">Nombre completo</label>
+                                        <input type="text" required="" name="full_name" value="{{request.user.username|title}}" placeholder="Nombre completo">
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="">Email</label>
+                                        <input type="text" required="" name="email"  placeholder="Correo" value="{{request.user.email}}">
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="">Celular</label>
+                                        <input type="text" name="mobile" value="{{request.user.profile.phone}}" required="" placeholder="Numero celular">
+                                    </div>
+                                </div>
+                                <h4 class="mb-30">Informacion de envio</h4>
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        <label for="">Direccion</label>
+                                        <input type="text" name="address" value="" placeholder="Direccion">
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="">Ciudad</label>
+                                        <input type="text" name="city"  placeholder="Ciudad" value="">
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="">Departamento</label>
+                                        <input type="text" name="state" value="" placeholder="Departamento">
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="">Pais</label>
+                                        <input type="text" name="country" value="" placeholder="Pais">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="border p-md-4 cart-totals ml-30">
+                            <div class="table-responsive">
+                                <div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <p class="fw-bold">Impuestos</p>
+                                        <p>$0</p>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <p class="fw-bold">Envio</p>
+                                        <p>$0</p>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <p class="fw-bold">Descuento</p>
+                                        <p>$0</p>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <p class="fw-bold">Total</p>
+                                        <p>${{cart_total_amount}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if totalcartitems %}
+                                {% if user.is_authenticated %}
+                                    <button type="submit" class="btn mb-20 w-100">Proceder al pago<i class="fi-rs-sign-out ml-15"></i></button>
+                                {% else %}
+                                    <div class="alert alert-danger mb-20 w-100" role="alert">
+                                        Debes iniciar sesión para continuar con la compra.
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <div class="alert alert-info mb-20 w-100" role="alert">
+                                    Tu carrito de compras está vacío.
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+{% endblock content %}
